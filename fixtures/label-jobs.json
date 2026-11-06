@@ -1,0 +1,30 @@
+{
+  "oddQuantityNormalized": {
+    "lotNum": "LOT42",
+    "useByText": "7/21/2026",
+    "foodLine1": "Chicken and Rice",
+    "foodLine2": "",
+    "pairRows": 2
+  },
+  "singleLong": {
+    "lotNum": "LONG27",
+    "useByText": "8/1/2026",
+    "foodLine1": "123456789012345678901234567",
+    "foodLine2": "",
+    "pairRows": 1
+  },
+  "twoLine": {
+    "lotNum": "TWO2",
+    "useByText": "9/2/2026",
+    "foodLine1": "Roasted chicken",
+    "foodLine2": "Carrots and brown rice",
+    "pairRows": 3
+  },
+  "escaped": {
+    "lotNum": "LOT\"_^~\\42",
+    "useByText": "10/3/2026",
+    "foodLine1": "Chef's \"_^~\\ plate",
+    "foodLine2": "",
+    "pairRows": 1
+  }
+}

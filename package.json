@@ -1,0 +1,11 @@
+{
+  "name": "petes-garden-zebra-label-printing",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test",
+    "generate:identity": "node scripts/generate-extension-identity.mjs",
+    "generate:icons": "node scripts/make-icons.mjs"
+  }
+}

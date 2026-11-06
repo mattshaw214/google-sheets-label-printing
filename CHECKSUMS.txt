@@ -1,0 +1,8 @@
+# Pete's Garden Google Sheets Zebra Printing - SHA-256 checksums
+# Chrome extension ID: agiabldkomibfhdfpdfmlfikhjcjbibn
+1154436d2aff0d6944e38cb62443755c72c42430eaae50eac85da3fe365409ec  chrome-extension/manifest.json
+7e0c9713dfb0fde634e21353d4f25ddea25eb96d35f0cee4240d44183f240fba  windows-helper/Petes Garden Zebra Helper Setup.exe
+685b83d567e8907e09e3c4cd2e4169c69dbd2e6c6edd7e8b1954b21576ceb07d  mac-helper/org.petesgarden.zebra
+eb27c7ba32d5bb483893393ff630c642713e02bfe57fc1389e5345c9b04e8177  mac-helper/Install Pete's Garden Zebra Helper.command
+c6911fd874a27060983bf0c7fea53d062a00b23ae0a1b73f34e72fae071e156c  mac-helper/Uninstall Pete's Garden Zebra Helper.command
+1a173ff1246402d43aa8846da06a1b9d45adae57a1f7ba04e22d916b72c840e0  spreadsheet/Petes Garden Google Sheets Label Printing.xlsx

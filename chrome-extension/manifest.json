@@ -1,0 +1,42 @@
+{
+  "manifest_version": 3,
+  "name": "Pete's Garden Zebra Labels",
+  "version": "1.0.4",
+  "description": "Print validated label rows from approved Google Sheets to a Zebra printer.",
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "permissions": [
+    "storage",
+    "nativeMessaging"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://docs.google.com/spreadsheets/*"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "all_frames": false
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "lib/content-bridge.js"
+      ],
+      "matches": [
+        "https://docs.google.com/*"
+      ]
+    }
+  ],
+  "icons": {
+    "16": "icons/icon-16.png",
+    "32": "icons/icon-32.png",
+    "48": "icons/icon-48.png",
+    "128": "icons/icon-128.png"
+  },
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyIsBlRapdU7Zdb2WQsft+McgDnGB8qO/0w4DQNQAx7mKrfqtRKBYzvPjLdT9J5GHRXV0Jz5ofLlZGFxF6NezakJztaD3XiJ+16sH/Ox5B0ZTnMRSKXVioW8N2MoMUnb4gSLYYKJAm/upxVSkQV/EpXFmSRtwU80/eiNZg//0RBlT0F5XnvQ1cKeqc0r0qSMyKmSXtJg5hBsa+JfiLgx/+VsECINae2SwruDv3mgh+lUdBRsnTBwqM26nsxGg2Tqfm1v0coHnHcQJQljg07CwWAD7ap7X8jlv7/bt4VKz3p9QSqIIweXA850h46Gfl77iKBZao6DVjPFxhPhNvzsqEQIDAQAB"
+}

@@ -1,0 +1,448 @@
+<!doctype html>
+<html>
+  <head>
+    <base target="_top">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+      :root {
+        color: #202124;
+        font: 14px/1.45 Arial, sans-serif;
+      }
+      body {
+        margin: 0;
+        padding: 18px;
+        background: #fff;
+      }
+      h1 {
+        margin: 0 0 6px;
+        color: #185c37;
+        font-size: 22px;
+      }
+      p {
+        margin: 6px 0 12px;
+      }
+      .intro {
+        color: #3c4043;
+      }
+      button, input {
+        box-sizing: border-box;
+        min-height: 38px;
+        border: 1px solid #bdc1c6;
+        border-radius: 6px;
+        background: #fff;
+        color: #202124;
+        font: inherit;
+      }
+      button {
+        width: 100%;
+        padding: 8px 12px;
+        cursor: pointer;
+        font-weight: 700;
+      }
+      button.primary {
+        border-color: #188038;
+        background: #188038;
+        color: #fff;
+      }
+      button.secondary {
+        border-color: #188038;
+        color: #185c37;
+      }
+      button.prominent {
+        min-height: 48px;
+        font-size: 18px;
+      }
+      button:disabled {
+        cursor: wait;
+        opacity: 0.6;
+      }
+      .daily-actions {
+        display: grid;
+        gap: 10px;
+        margin: 18px 0 14px;
+      }
+      #status {
+        margin: 12px 0 22px;
+        padding: 10px 12px;
+        border-left: 4px solid #188038;
+        background: #e6f4ea;
+      }
+      #status.error {
+        border-color: #c5221f;
+        background: #fce8e6;
+      }
+      details {
+        border: 1px solid #dadce0;
+        border-radius: 8px;
+        background: #f8f9fa;
+      }
+      summary {
+        padding: 12px;
+        cursor: pointer;
+        color: #3c4043;
+        font-weight: 700;
+      }
+      .setup-body {
+        padding: 0 12px 14px;
+        border-top: 1px solid #e3e5e7;
+      }
+      .setup-body > button {
+        margin-top: 10px;
+      }
+      #authorization-row {
+        margin: 12px 0 16px;
+        padding: 10px;
+        border-radius: 6px;
+        background: #fff;
+      }
+      #authorization-status {
+        margin-top: 0;
+      }
+      fieldset {
+        margin: 16px 0 4px;
+        padding: 0;
+        border: 0;
+      }
+      legend, .field-label {
+        margin-bottom: 6px;
+        font-weight: 700;
+      }
+      .size-options {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        overflow: hidden;
+        border: 1px solid #bdc1c6;
+        border-radius: 6px;
+        background: #fff;
+      }
+      .size-options label {
+        position: relative;
+        display: block;
+        padding: 9px 4px;
+        border-right: 1px solid #bdc1c6;
+        cursor: pointer;
+        text-align: center;
+      }
+      .size-options label:last-child {
+        border-right: 0;
+      }
+      .size-options input {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        min-height: 0;
+        opacity: 0;
+      }
+      .size-options label:has(input:checked) {
+        background: #e6f4ea;
+        color: #185c37;
+        font-weight: 700;
+      }
+      .row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-top: 12px;
+      }
+      .row label {
+        display: block;
+        font-weight: 700;
+      }
+      .row input {
+        width: 100%;
+        margin-top: 5px;
+        padding: 7px 8px;
+      }
+      .hint {
+        color: #5f6368;
+        font-size: 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="regular-interface">
+      <h1>Pete's Garden Labels</h1>
+      <p class="intro">Enter PrintQty on the sheet, then print. Odd quantities automatically round up.</p>
+
+      <div class="daily-actions">
+        <button id="print-labels" class="primary prominent" type="button">Print Labels</button>
+      </div>
+    </div>
+
+    <div id="status" role="status" aria-live="polite">Checking the printer…</div>
+
+    <details id="setup-panel">
+      <summary>Setup &amp; troubleshooting</summary>
+      <div class="setup-body">
+        <div id="authorization-row">
+          <p id="authorization-status">Authorize this sheet once before its first print.</p>
+          <button id="authorize-sheet" class="secondary" type="button">Authorize This Sheet</button>
+        </div>
+
+        <p><strong>Printer:</strong> <span id="detected-printer">Checking…</span></p>
+
+        <fieldset id="text-size">
+          <legend>Text size</legend>
+          <div class="size-options">
+            <label><input id="text-size-large" name="text-size" type="radio" value="large" checked>Large</label>
+            <label><input id="text-size-medium" name="text-size" type="radio" value="medium">Medium</label>
+            <label><input id="text-size-compact" name="text-size" type="radio" value="compact">Compact</label>
+          </div>
+        </fieldset>
+        <p class="hint">Long descriptions automatically use a safe smaller size.</p>
+
+        <div class="row">
+          <label>Horizontal offset
+            <input id="horizontal-offset" type="number" min="-100" max="100" step="1" value="0" required>
+          </label>
+          <label>Vertical offset
+            <input id="vertical-offset" type="number" min="-100" max="100" step="1" value="0" required>
+          </label>
+        </div>
+
+        <button id="test-connection" type="button">Test Printer</button>
+        <button id="print-test" type="button">Print Test Pair</button>
+      </div>
+    </details>
+
+    <script>
+      const CHANNEL = "PETES_GARDEN_LABELS";
+      const SHEETS_ORIGIN = "https://docs.google.com";
+      const SHEET_ID = <?!= JSON.stringify(sheetId) ?>;
+      const QUICK_PRINT_MODE = <?!= JSON.stringify(quickPrintMode) ?>;
+      const DEFAULT_EXTENSION_TIMEOUT_MS = 15000;
+      const PRINT_EXTENSION_TIMEOUT_MS = 120000;
+      const INDETERMINATE_PRINT_ERROR = "Print status is unknown. Do not print again until you check the printer.";
+      const pending = new Map();
+      let printRetryLocked = false;
+
+      function element(id) {
+        return document.getElementById(id);
+      }
+
+      function showStatus(message, isError = false) {
+        const status = element("status");
+        status.textContent = message;
+        status.classList.toggle("error", isError);
+      }
+
+      function errorMessage(error) {
+        return error && error.message ? error.message : String(error || "Something went wrong.");
+      }
+
+      function serverCall(functionName) {
+        return new Promise((resolve, reject) => {
+          const runner = google.script.run
+            .withSuccessHandler(resolve)
+            .withFailureHandler((error) => reject(new Error(errorMessage(error))));
+          if (functionName === "buildPrintJob") {
+            runner.buildPrintJob();
+          } else if (functionName === "clearPrintQuantities") {
+            runner.clearPrintQuantities();
+          } else {
+            reject(new Error("This sheet action is not available."));
+          }
+        });
+      }
+
+      function extensionRequest(action, payload = {}) {
+        return new Promise((resolve, reject) => {
+          const requestId = `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+          const isPrintRequest = action === "print_labels";
+          const timer = window.setTimeout(() => {
+            pending.delete(requestId);
+            if (isPrintRequest) {
+              printRetryLocked = true;
+              element("print-labels").disabled = true;
+              reject(new Error(INDETERMINATE_PRINT_ERROR));
+            } else {
+              reject(new Error("The Pete's Garden extension did not respond. Check that it is installed and enabled."));
+            }
+          }, isPrintRequest ? PRINT_EXTENSION_TIMEOUT_MS : DEFAULT_EXTENSION_TIMEOUT_MS);
+          pending.set(requestId, { resolve, reject, timer, isPrintRequest });
+          window.top.postMessage({
+            channel: CHANNEL,
+            requestId,
+            action,
+            payload: { ...payload, sheetId: SHEET_ID },
+          }, SHEETS_ORIGIN);
+        });
+      }
+
+      window.addEventListener("message", (event) => {
+        if (event.origin !== SHEETS_ORIGIN || event.source !== window.top) return;
+        const message = event.data;
+        if (!message || message.channel !== CHANNEL || !pending.has(message.requestId)) return;
+        const request = pending.get(message.requestId);
+        pending.delete(message.requestId);
+        window.clearTimeout(request.timer);
+        if (message.ok) {
+          request.resolve(message.result || {});
+        } else {
+          const messageText = message.error || "The printer request was not accepted.";
+          if (request.isPrintRequest && messageText === INDETERMINATE_PRINT_ERROR) {
+            printRetryLocked = true;
+            element("print-labels").disabled = true;
+          }
+          request.reject(new Error(messageText));
+        }
+      });
+
+      function boundedIntegerValue(id, minimum, maximum, label) {
+        const input = element(id);
+        const message = `${label} must be a whole number from ${minimum} through ${maximum}.`;
+        input.setCustomValidity("");
+        const text = String(input.value).trim();
+        const value = /^-?\d+$/.test(text) ? Number(text) : NaN;
+        if (!input.checkValidity() || !Number.isSafeInteger(value) || value < minimum || value > maximum) {
+          input.setCustomValidity(message);
+          input.reportValidity();
+          throw new Error(message);
+        }
+        return value;
+      }
+
+      function currentPreferences() {
+        const selected = document.querySelector('input[name="text-size"]:checked');
+        if (!selected) {
+          throw new Error("Choose a text size.");
+        }
+        return {
+          textSize: selected.value,
+          horizontalOffset: boundedIntegerValue("horizontal-offset", -100, 100, "Horizontal offset"),
+          verticalOffset: boundedIntegerValue("vertical-offset", -100, 100, "Vertical offset"),
+        };
+      }
+
+      function applyPreferences(preferences = {}) {
+        const size = ["large", "medium", "compact"].includes(preferences.textSize)
+          ? preferences.textSize
+          : "large";
+        for (const input of document.querySelectorAll('input[name="text-size"]')) {
+          input.checked = input.value === size;
+        }
+        element("horizontal-offset").value = String(preferences.horizontalOffset ?? 0);
+        element("vertical-offset").value = String(preferences.verticalOffset ?? 0);
+      }
+
+      function applyStatus(result) {
+        applyPreferences(result.preferences);
+        element("authorization-row").hidden = Boolean(result.authorized);
+        element("detected-printer").textContent = result.printerName
+          || (result.helperReady ? "No compatible printer detected" : "Helper unavailable");
+
+        if (result.setupError) {
+          showStatus(result.setupError, true);
+        } else if (!result.authorized) {
+          showStatus("Open Setup & troubleshooting and authorize this sheet once.");
+        } else if (result.printerReady) {
+          showStatus(`Ready to print to ${result.printerName}.`);
+        } else {
+          showStatus("Connect and turn on the ZD220/ZD230, then test the printer.", true);
+        }
+      }
+
+      async function withButton(button, work) {
+        button.disabled = true;
+        try {
+          return await work();
+        } catch (error) {
+          const message = errorMessage(error);
+          showStatus(message, true);
+          return null;
+        } finally {
+          if (button.id !== "print-labels" || !printRetryLocked) {
+            button.disabled = false;
+          }
+        }
+      }
+
+      async function printAndClear(closeAfterSuccess) {
+        showStatus("Checking PrintQty and sending labels…");
+        const job = await serverCall("buildPrintJob");
+        const result = await extensionRequest("print_labels", job);
+        const actual = result.actualTotal ?? job.actualTotal;
+
+        try {
+          await serverCall("clearPrintQuantities");
+        } catch (error) {
+          showStatus(
+            `${actual.toLocaleString()} labels were sent, but PrintQty could not be cleared. `
+              + `Clear it manually before printing again. ${errorMessage(error)}`,
+            true,
+          );
+          return { printed: true, cleared: false };
+        }
+
+        showStatus(
+          `${actual.toLocaleString()} labels were sent and PrintQty was cleared. `
+            + "Odd quantities were rounded up automatically.",
+        );
+        if (closeAfterSuccess) {
+          window.setTimeout(() => google.script.host.close(), 700);
+        }
+        return { printed: true, cleared: true };
+      }
+
+      async function runQuickPrint() {
+        try {
+          await printAndClear(true);
+        } catch (error) {
+          showStatus(errorMessage(error), true);
+        }
+      }
+
+      async function savePreferences() {
+        try {
+          const result = await extensionRequest("save_preferences", {
+            preferences: currentPreferences(),
+          });
+          showStatus(result.message || "Label appearance was saved.");
+        } catch (error) {
+          showStatus(errorMessage(error), true);
+        }
+      }
+
+      element("authorize-sheet").addEventListener("click", (event) =>
+        withButton(event.currentTarget, async () => {
+          await extensionRequest("authorize_sheet");
+          applyStatus(await extensionRequest("get_status"));
+        }));
+
+      for (const input of document.querySelectorAll('input[name="text-size"]')) {
+        input.addEventListener("change", savePreferences);
+      }
+      element("horizontal-offset").addEventListener("change", savePreferences);
+      element("vertical-offset").addEventListener("change", savePreferences);
+
+      element("test-connection").addEventListener("click", (event) =>
+        withButton(event.currentTarget, async () => {
+          const result = await extensionRequest("test_connection");
+          element("detected-printer").textContent = result.printerName;
+          showStatus(`Printer ready: ${result.printerName}.`);
+        }));
+
+      element("print-test").addEventListener("click", (event) =>
+        withButton(event.currentTarget, async () => {
+          const result = await extensionRequest("print_test");
+          showStatus(result.message || "The test pair was sent. Check the physical labels.");
+        }));
+
+      element("print-labels").addEventListener("click", (event) =>
+        withButton(event.currentTarget, () => printAndClear(false)));
+
+      if (QUICK_PRINT_MODE) {
+        element("regular-interface").hidden = true;
+        element("setup-panel").hidden = true;
+        runQuickPrint();
+      } else {
+        extensionRequest("get_status")
+          .then(applyStatus)
+          .catch((error) => {
+            showStatus(errorMessage(error), true);
+          });
+      }
+    </script>
+  </body>
+</html>
