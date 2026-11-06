@@ -1,4 +1,4 @@
-# Pete's Garden Google Sheets Zebra Label Printing
+# Google Sheets Food Label Printing
 
 This package prints two identical 2-inch × 0.75-inch labels across each media
 row on a Zebra ZD220 or ZD230. Google Sheets printing is fixed to 203-dpi ZPL
