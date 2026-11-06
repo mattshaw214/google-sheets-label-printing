@@ -1,9 +1,8 @@
-# Pete's Garden Zebra Label Printing
+# Google Sheets Label Printing
 
-This repository contains the complete Pete's Garden label-printing solution for
-Google Sheets and Zebra ZD220/ZD230 printers. It replaces the former Access
-database label workflow with one-click printing from the charity's food-tracking
-sheet.
+This repository contains a label-printing solution for
+Google Sheets and Zebra ZD220/ZD230 printers. It provides the ability to complete a
+one-click printing from google sheets directly to label printer.
 
 The labels are 2 inches wide by 0.75 inches tall and print two across. Each
 label contains the lot number, the fixed words `Use By`, the use/freeze date,
