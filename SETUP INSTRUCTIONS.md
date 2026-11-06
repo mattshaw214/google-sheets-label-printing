@@ -6,8 +6,6 @@ and uses a small local helper on Windows or macOS. The extension automatically
 detects the connected ZD220/ZD230 printer queue, so there is no connection,
 profile, queue, or IP choice in the sidebar.
 
-The Google Sheet is here: [Pete's Garden Google Sheets Label Printing](https://docs.google.com/spreadsheets/d/1cM452BrDfjIxqqfmLnjD9rb_J61HfWQNhcXqqUUlep0/edit)
-
 ## Package contents
 
 - `chrome-extension` — load this complete folder in Chrome.
