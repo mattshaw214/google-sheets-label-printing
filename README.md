@@ -108,7 +108,7 @@ tracked because the extension and helper must use the same stable identity.
 ## Verification status
 
 - The final label layout and raw USB printing were physically verified on
-  Pete's Garden's Zebra ZD220/ZD230 from macOS.
+   Zebra ZD220/ZD230 from macOS.
 - The macOS helper was verified end-to-end through Chrome Native Messaging and
   the real printer queue.
 - The portable Go test suite covers Windows Winspool flow and installation
