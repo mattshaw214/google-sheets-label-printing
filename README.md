@@ -33,7 +33,6 @@ helpers accept messages only from that extension origin.
   installer, and automated tests.
 - `windows-helper/` — ready-to-install Windows helper executable.
 - `mac-helper/` — ready-to-install universal macOS helper and install scripts.
-- `spreadsheet/` — an Excel template that can be imported into Google Sheets.
 - `samples/` — sample ZPL/EPL output.
 - `tests/` and `fixtures/` — JavaScript and Apps Script automated tests.
 - `SETUP INSTRUCTIONS.md` — complete end-user installation and operating guide.
